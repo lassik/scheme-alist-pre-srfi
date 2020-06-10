@@ -1,0 +1,46 @@
+# Association lists (tentative title)
+
+## Rationale
+
+### Prior art
+
+|=====
+|acons key value alist|Guile
+|alist-associator pred|SLIB
+|alist-cons key datum alist -> alist|SRFI 1
+|alist-copy alist -> alist|SRFI 1
+|alist-delete  key alist [=] -> alist|SRFI 1
+|alist-delete! key alist [=] -> alist|SRFI 1
+|alist-for-each proc alist|SLIB
+|alist-inquirer pred|SLIB
+|alist-map proc alist|SLIB
+|alist-remover pred|SLIB
+|assoc key alist [=] -> pair or #f|R5RS+, SRFI 1
+|assoc-ref alist key|Guile
+|assoc-remove! alist key|Guile
+|assoc-set! alist key value|Guile
+|assq key alist -> pair or #f|R5RS+, SRFI 1
+|assq-ref alist key|Guile
+|assq-remove! alist key|Guile
+|assq-set! alist key val|Guile
+|assv key alist -> pair or #f|R5RS+, SRFI 1
+|assv-ref alist key|Guile
+|assv-remove! alist key|Guile
+|assv-set! alist key value|Guile
+|make-alist keys values|Cowan
+|predicate->asso pred|SLIB
+|reverse-assoc obj alist [=]|Cowan
+|reverse-assq obj alist|Cowan
+|reverse-assv obj alist|Cowan
+|sloppy-assoc key alist|Guile
+|sloppy-assq key alist|Guile
+|sloppy-assv key alist|Guile
+|=====
+
+## References
+
+http://people.csail.mit.edu/jaffer/slib/Association-Lists.html#Association-Lists[SLIB alist module]
+
+https://www.gnu.org/software/guile/manual/html_node/Association-Lists.html[Guile]
+
+https://bitbucket.org/cowan/r7rs-wg1-infra/src/default/AssociationListsCowan.md[John Cowan's pre-SRFI]
