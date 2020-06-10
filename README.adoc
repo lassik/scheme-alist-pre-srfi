@@ -41,6 +41,8 @@
 
 ## References
 
+https://srfi.schemers.org/srfi-1/srfi-1.html#AssociationLists[SRFI 1]
+
 http://people.csail.mit.edu/jaffer/slib/Association-Lists.html#Association-Lists[SLIB alist module]
 
 https://www.gnu.org/software/guile/manual/html_node/Association-Lists.html[Guile]
