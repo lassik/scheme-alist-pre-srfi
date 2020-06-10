@@ -11,7 +11,7 @@
 |*alist-associator*|pred|SLIB
 |*alist-cons*|key datum alist -> alist|SRFI 1
 |*alist-copy*|alist -> alist|SRFI 1
-|*alist-delete *|key alist [=] -> alist|SRFI 1
+|*alist-delete*|key alist [=] -> alist|SRFI 1
 |*alist-delete!*|key alist [=] -> alist|SRFI 1
 |*alist-for-each*|proc alist|SLIB
 |*alist-inquirer*|pred|SLIB
