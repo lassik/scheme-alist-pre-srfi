@@ -4,7 +4,9 @@
 
 ### Prior art
 
+[options="header"]
 |=====
+|Procedure|Arguments|Provided by
 |*acons*|key value alist|Guile
 |*alist-associator*|pred|SLIB
 |*alist-cons*|key datum alist -> alist|SRFI 1
