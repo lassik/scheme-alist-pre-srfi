@@ -39,7 +39,6 @@
 |Procedure|Signature|Provided by
 |*alist-delete!*|key alist [=] -> alist|SRFI 1
 |*alist-delete*|key alist [=] -> alist|SRFI 1
-|*alist-remover*|pred|SLIB
 |*assoc-remove!*|alist key|Guile
 |*assq-remove!*|alist key|Guile
 |*assv-remove!*|alist key|Guile
