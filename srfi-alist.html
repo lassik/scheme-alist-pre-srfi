@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SRFI ALIST: Association List Library</title>
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+  <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI logo" /></a>ALIST: Association List Library</h1>
+
+    <p>by Lassi Kortela and Marc Nieper-Wißkirchen</p>
+
+    <h2 id="status">Status</h2>
+
+    <h2 id="abstract">Abstract</h2>
+
+    <p>An alist, short for association list, is a well-known Scheme
+      data structure to model finite maps of arbitrary keys and
+      values.  They are supported in the R7RS (small) through general
+      list procedures and a few specialized procedures.  This SRFI
+      provides an full-fledged API to association lists as a
+      particular implementation model for persistent collections.
+    </p>
+
+    <h2 id="issues">Issues</h2>
+
+    <h2 id="rationale">Rationale</h2>
+
+    <p>Traditionally in various dialects of LISP, including Scheme,
+      finite maps are modelled through association lists (alists) or
+      property lists (plists).  Besides differences in their internal
+      representations, alists are mostly used to model persistent finite
+      maps.</p>
+
+    <p>As a Scheme datum, an alist is a list of pairs. The cars of the
+      pairs are called the <dfn>keys</dfn> and the cdrs are called
+      the <dfn>values</dfn>.  Its interpretation as a finite map is as
+      follows: The first pair containing a given key determines its
+      value.  If there is no such pair, the key is not mapped.
+      Consing to a given alist may therefore shadow previous
+      associations, which is the key to the use of alists as
+      persistent data structures.
+    </p>
+
+    <p>An alist where no association shadows another one is called an
+      alist <dfn>without duplicate keys.</dfn></p>
+
+    <p>
+      In this sense, alists can fulfill the same role as the mappings
+      of SRFI 146.  There advantage is that they are very light-weight
+      and that neither a hash function nor an ordering for the keys is
+      required.  Their disadvantage is that referencing in alists
+      takes <var>O</var>(<var>n</var>) time in the length <var>n</var>
+      of the alist.
+    </p>
+
+    <p>The procedures of this SRFI are, by default, pure functional in
+      that they do not alter their parameters.  However, this SRFI
+      also defines linear-update procedures, all of whose names end
+      in <code>!</code>.  Some of these linear-update procedure
+      guarantee not to return alists with duplicate keys when applied
+      to alists without duplicate keys.
+    </p>
+
+    <p>The interfaces are partially modelled after SRFI 1, SRFI 113,
+    SRFI 125 and SRFI 146.</p>
+
+    <h2 id="specification">Specification</h2>
+
+    <h3>Procedures</h3>
+
+    <h4>Constructors</h4>
+
+    <p><code>(alist <var>arg</var> ...)</code></p>
+
+    <p>Returns a newly allocated alist.
+      The <code><var>args</var></code> alternate between keys and
+      values and are used to initialize the alist.  In particular, the
+      number of <code><var>args</var></code> has to be even.  Earlier associations with
+      equal keys take precedence over later arguments.  The returned
+      alist contains no duplicate keys if the <code><var>args</var></code> contain no
+      duplicate keys.</p>
+
+    <p><code>(make-alist <var>keys</var> <var>values</var>)</code></p>
+
+    <p>Returns a newly allocated alist whose associations are given by
+    the <code><var>keys</var></code>
+    and <code><var>values</var></code> in order.  In particular, the
+    number of <code><var>keys</var></code> and <code><var>values</var></code> has to be the same.  Earlier
+    associations with equal keys take precedence over later arguments.
+    The returned alist contains no duplicate keys if the <code><var>keys</var></code>
+    contain no duplicates.</p>
+
+    <p><code>(alist-copy <var>alist</var> ...)</code></p>
+
+    <p>Returns a newly allocated alist containing the associations of
+    <code><var>alist</var></code>.  The returned alist contains no duplicate keys if the
+    <code><var>alist</var></code> does not contain duplicate keys.</p>
+
+    <p><code>(alist-unfold <var>stop?</var> <var>mapper</var> <var>successor</var> <var>seed</var>
+    …)</code></p>
+
+    <p>Creates a newly allocated alist.  If the result of applying
+    <code><var>stop?</var></code> to the <code><var>seeds</var></code> is true, return the alist.  Otherwise,
+    apply the <code><var>mapper</var></code> to the <code><var>seeds</var></code>. <code><var>mapper</var></code> returns two
+    values, which are added to the alist as the key and the value,
+    respectively.  Then get new seeds by applying the <code><var>successor</var></code> to
+    the <code><var>seeds</var></code>, and repeat this algorithm.  Associations earlier in
+    the list take precedence over those that come later.  The returned
+    alist contains no duplicate keys if <code><var>mapper</var></code> does not return
+    duplicate keys.</p>
+
+    <h4>Predicates</h4>
+
+    <p><code>(alist? <var>obj</var>)</code></p>
+
+    <p><code>(alist-contains? <var>equal?</var> <var>alist</var> <var>key</var>)</code></p>
+
+    <p><code>(alist-empty? <var>alist</var>)</code></p>
+
+    <p><code>(alist-disjoint? <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var>)</code></p>
+
+    <h4>Accessors</h4>
+
+    <p><code>(alist-ref <var>equal?</var> <var>alist</var> <var>key</var> <var>failure</var> <var>success</var>)</code></p>
+
+    <p><code>(alist-ref <var>equal?</var> <var>alist</var> <var>key</var> <var>failure</var>)</code></p>
+
+    <p><code>(alist-ref <var>equal?</var> <var>alist</var> <var>key</var>)</code></p>
+
+    <p><code>(alist-ref/default <var>equal?</var> <var>alist</var> <var>key</var>)</code></p>
+
+    <h4>Updaters</h4>
+
+    <p><code>(alist-adjoin <var>equal?</var> <var>alist</var> <var>arg</var> ...)</code></p>
+
+    <p><code>(alist-adjoin! <var>equal?</var> <var>alist</var> <var>arg</var> ...)</code></p>
+
+    <p><code>(alist-set <var>equal?</var> <var>alist</var> <var>arg</var> ...)</code></p>
+
+    <p><code>(alist-set! <var>equal?</var> <var>alist</var> <var>arg</var> ...)</code></p>
+
+    <p><code>(alist-replace <var>equal?</var> <var>alist</var> <var>key</var> <var>value</var>)</code></p>
+    <p><small><code>(alist-cons <var>key</var> <var>value</var> <var>alist</var>)</code></small></p>
+
+    <p><code>(alist-replace! <var>alist</var> <var>key</var> <var>value</var>)</code></p>
+
+    <p><code>(alist-remove <var>equal?</var> <var>alist</var> <var>key</var> ...)</code></p>
+    <p><small><code>(alist-delete <var>key</var> <var>alist</var> <var>equal?</var>)</code></small></p>
+    <p><code>(alist-remove! <var>equal?</var> <var>alist</var> <var>key</var> ...)</code></p>
+    <p><small><code>(alist-delete! <var>key</var> <var>alist</var> <var>equal?</var>)</code></small></p>
+    <p><code>(alist-remove-all <var>equal?</var> <var>alist</var> <var>key-list</var>)</code></p>
+    <p><code>(alist-remove-all! <var>equal?</var> <var>alist</var> <var>key-list</var>)</code></p>
+
+    <p><code>(alist-intern <var>equal?</var> <var>alist</var> <var>key</var> <var>failure</var>)</code></p>
+    <p><code>(alist-intern! <var>equal?</var> <var>alist</var> <var>key</var> <var>failure</var>)</code></p>
+
+    <p><code>(alist-update <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var> <var>failure</var> <var>success</var>)</code></p>
+    <p><code>(alist-update <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var> <var>failure</var>)</code></p>
+    <p><code>(alist-update <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var>)</code></p>
+
+    <p><code>(alist-update! <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var> <var>failure</var> <var>success</var>)</code></p>
+    <p><code>(alist-update! <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var> <var>failure</var>)</code></p>
+    <p><code>(alist-update! <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var>)</code></p>
+
+    <p><code>(alist-update/default <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var> <var>default</var>)</code></p>
+    <p><code>(alist-update!/default <var>equal?</var> <var>alist</var> <var>key</var> <var>updater</var> <var>default</var>)</code></p>
+
+    <p><code>(alist-pop <var>alist</var> <var>failure</var>)</code></p>
+    <p><code>(alist-pop <var>alist</var>)</code></p>
+
+    <p><code>(alist-pop <var>alist</var> <var>failure</var>)</code></p>
+    <p><code>(alist-pop! <var>alist</var>)</code></p>
+
+    <p><code>(alist-search <var>equal?</var> <var>alist</var> <var>key</var> <var>failure</var> <var>success</var>)</code></p>
+    <p><code>(alist-search! <var>equal?</var> <var>alist</var> <var>key</var> <var>failure</var> <var>success</var>)</code></p>
+
+    <h4>Deletion</h4>
+
+    <p><code>(alist-remove-duplicates <var>equal?</var> <var>alist</var>)</code></p>
+    <p><code>(alist-remove-duplicates! <var>equal?</var> <var>alist</var>)</code></p>
+
+    <h4>The whole mapping</h4>
+
+    <p>For the following procedures, it is an error if
+    the <var>alist</var> contains duplicate keys.</p>
+
+    <p><code>(alist-size <var>equal?</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-find <var>equal?</var> <var>pred?</var> <var>alist</var> <var>failure</var>)</code></p>
+
+    <p><code>(alist-count <var>equal?</var> <var>pred?</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-any? <var>equal?</var> <var>pred?</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-every? <var>equal?</var> <var>pred?</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-keys <var>equal?</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-values <var>equal?</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-entries <var>equal?</var> <var>alist</var>)</code></p>
+
+    <h4>Mapping and folding</h4>
+
+    <p><code>(alist-map <var>proc</var> <var>alist</var>)</code></p>
+    <p><code>(alist-map! <var>proc</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-filter <var>pred?</var> <var>alist</var>)</code></p>
+    <p><code>(alist-filter! <var>pred?</var> <var>alist</var>)</code></p>
+    <p><code>(alist-remove <var>pred?</var> <var>alist</var>)</code></p>
+    <p><code>(alist-remove! <var>pred?</var> <var>alist</var>)</code></p>
+    <p><code>(alist-partition <var>pred?</var> <var>alist</var>)</code></p>
+    <p><code>(alist-partition! <var>pred?</var> <var>alist</var>)</code></p>
+
+    <p>For the following procedures, it is an error if
+    the <var>alist</var> contains duplicate keys.</p>
+
+    <p><code>(alist-for-each <var>proc</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-fold <var>proc</var> <var>nil</var> <var>alist</var>)</code></p>
+
+    <p><code>(alist-map-&gt;list <var>proc</var> <var>alist</var>)</code></p>
+
+    <h4>Submappings</h4>
+
+    <p><code>(alist=? <var>equal?</var> <var>equal?<sub>2</sub>
+	  <var>alist<sub>1</sub></var> <var>alist<sub>2</sub> …)</code></p>
+
+    <p><code>(alist&lt;? <var>equal?<sub>1</sub></var> <var>equal?<sub>2</sub>
+	  <var>alist<sub>1</sub></var> <var>alist<sub>2</sub> …)</code></p>
+
+    <p><code>(alist&gt;? <var>equal?<sub>1</sub></var> <var>equal?<sub>2</sub>
+	  <var>alist<sub>1</sub></var> <var>alist<sub>2</sub> …)</code></p>
+
+    <p><code>(alist&lt;=? <var>equal?<sub>1</sub></var> <var>equal?<sub>2</sub>
+	  <var>alist<sub>1</sub></var> <var>alist<sub>2</sub> …)</code></p>
+
+    <p><code>(alist&gt;=? <var>equal?<sub>1</sub></var> <var>equal?<sub>2</sub>
+	  <var>alist<sub>1</sub></var> <var>alist<sub>2</sub> …)</code></p>
+
+    <h4>Set theory operations</h4>
+
+    <p><code>(alist-union <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+    <p><code>(alist-intersection <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+    <p><code>(alist-difference <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+    <p><code>(alist-xor <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+
+    <p><code>(alist-union! <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+    <p><code>(alist-intersection! <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+    <p><code>(alist-difference! <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+    <p><code>(alist-xor! <var>equal?</var> <var>alist<sub>1</sub></var> <var>alist<sub>2</sub></var> …)</code></p>
+
+    <h2 id="implementation">Implementation</h2>
+
+    <p>A fully portable implementation based on R7RS (small) will be
+    provided.</p>
+
+    <h2 id="acknowledgements">Acknowledgements</h2>
+
+    <p>We thank Arthur A. Gleckler for his commitment as the SRFI
+    editor and John Cowan for his commitment for R7RS (large).</p>
+
+    <h2 id="copyright">Copyright</h2>
+    <p>&copy; 2020 Lassi Kortela, Marc Nieper-Wißkirchen.</p>
+
+    <p>
+      Permission is hereby granted, free of charge, to any person
+      obtaining a copy of this software and associated documentation files
+      (the "Software"), to deal in the Software without restriction,
+      including without limitation the rights to use, copy, modify, merge,
+      publish, distribute, sublicense, and/or sell copies of the Software,
+      and to permit persons to whom the Software is furnished to do so,
+      subject to the following conditions:</p>
+
+    <p>
+      The above copyright notice and this permission notice (including the
+      next paragraph) shall be included in all copies or substantial
+      portions of the Software.</p>
+    <p>
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+      NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+      BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+      ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+      CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+      SOFTWARE.</p>
+
+    <hr>
+    <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">Arthur A. Gleckler</a></address></body></html>
