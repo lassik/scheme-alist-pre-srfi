@@ -5,7 +5,11 @@
     <title>SRFI ALIST: Association List Library</title>
     <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
     <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
-    <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>table, tr, th, td { border: 1px solid black; }</style>
+
+  </head>
   <body>
     <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI logo" /></a>ALIST: Association List Library</h1>
 
@@ -65,6 +69,442 @@
 
     <p>The interfaces are partially modelled after SRFI 1, SRFI 113,
     SRFI 125 and SRFI 146.</p>
+
+    <h3>Prior art</h3>
+
+    <h4>Make new list</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>alist-copy</strong></p>
+          </td>
+          <td>
+            <p>alist → alist</p>
+          </td>
+          <td>
+            <p>SRFI 1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>make-alist</strong></p>
+          </td>
+          <td>
+            <p>keys values</p>
+          </td>
+          <td>
+            <p>Cowan</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Add new entry</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>acons</strong></p>
+          </td>
+          <td>
+            <p>key value alist</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>alist-cons</strong></p>
+          </td>
+          <td>
+            <p>key datum alist → alist</p>
+          </td>
+          <td>
+            <p>SRFI 1</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Add new entry or change existing entry</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>assoc-set!</strong></p>
+          </td>
+          <td>
+            <p>alist key value</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assq-set!</strong></p>
+          </td>
+          <td>
+            <p>alist key val</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assv-set!</strong></p>
+          </td>
+          <td>
+            <p>alist key value</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Remove existing entries</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>alist-delete!</strong></p>
+          </td>
+          <td>
+            <p>key alist [=] → alist</p>
+          </td>
+          <td>
+            <p>SRFI 1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>alist-delete</strong></p>
+          </td>
+          <td>
+            <p>key alist [=] → alist</p>
+          </td>
+          <td>
+            <p>SRFI 1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assoc-remove!</strong></p>
+          </td>
+          <td>
+            <p>alist key</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assq-remove!</strong></p>
+          </td>
+          <td>
+            <p>alist key</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assv-remove!</strong></p>
+          </td>
+          <td>
+            <p>alist key</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Get existing entry</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>assoc</strong></p>
+          </td>
+          <td>
+            <p>key alist [=] → pair or #f</p>
+          </td>
+          <td>
+            <p>R5RS+, SRFI 1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assoc-ref</strong></p>
+          </td>
+          <td>
+            <p>alist key</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assq</strong></p>
+          </td>
+          <td>
+            <p>key alist → pair or #f</p>
+          </td>
+          <td>
+            <p>R5RS+, SRFI 1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assq-ref</strong></p>
+          </td>
+          <td>
+            <p>alist key</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assv</strong></p>
+          </td>
+          <td>
+            <p>key alist → pair or #f</p>
+          </td>
+          <td>
+            <p>R5RS+, SRFI 1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>assv-ref</strong></p>
+          </td>
+          <td>
+            <p>alist key</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>sloppy-assoc</strong></p>
+          </td>
+          <td>
+            <p>key alist</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>sloppy-assq</strong></p>
+          </td>
+          <td>
+            <p>key alist</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>sloppy-assv</strong></p>
+          </td>
+          <td>
+            <p>key alist</p>
+          </td>
+          <td>
+            <p>Guile</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Get existing entry by value instead of key</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>reverse-assoc</strong></p>
+          </td>
+          <td>
+            <p>obj alist [=]</p>
+          </td>
+          <td>
+            <p>Cowan</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>reverse-assq</strong></p>
+          </td>
+          <td>
+            <p>obj alist</p>
+          </td>
+          <td>
+            <p>Cowan</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>reverse-assv</strong></p>
+          </td>
+          <td>
+            <p>obj alist</p>
+          </td>
+          <td>
+            <p>Cowan</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Traverse list</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>alist-for-each</strong></p>
+          </td>
+          <td>
+            <p>proc alist</p>
+          </td>
+          <td>
+            <p>SLIB</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>alist-map</strong></p>
+          </td>
+          <td>
+            <p>proc alist</p>
+          </td>
+          <td>
+            <p>SLIB</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Abstract list</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Procedure</th>
+          <th>Signature</th>
+          <th>Provided by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>alist-associator</strong></p>
+          </td>
+          <td>
+            <p>pred</p>
+          </td>
+          <td>
+            <p>SLIB</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>alist-inquirer</strong></p>
+          </td>
+          <td>
+            <p>pred</p>
+          </td>
+          <td>
+            <p>SLIB</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>alist-remover</strong></p>
+          </td>
+          <td>
+            <p>pred</p>
+          </td>
+          <td>
+            <p>SLIB</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p><strong>predicate→asso</strong></p>
+          </td>
+          <td>
+            <p>pred</p>
+          </td>
+          <td>
+            <p>SLIB</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <h2 id="specification">Specification</h2>
 
